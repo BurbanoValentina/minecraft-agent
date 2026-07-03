@@ -58,14 +58,16 @@ def _fallback_blueprint(user_request: str) -> HouseBlueprint:
 
 
 def _compact_summary(blueprint: HouseBlueprint, materials: list[dict[str, int | str]]) -> str:
-    materials_text = " ".join(f"{item['quantity']} {item['name']}" for item in materials)
-    rooms_text = " ".join(blueprint.rooms)
+    materials_text = "\n".join(f"- {item['quantity']} {item['name']}" for item in materials)
+    rooms_text = ", ".join(blueprint.rooms)
+    notes_text = "\n".join(f"- {note}" for note in blueprint.notes) if blueprint.notes else "- Sin notas"
     return (
-        f"{blueprint.title}"
-        f"Tamaño:{blueprint.size}"
-        f"Materiales:{materials_text}"
-        f"Pisos:{blueprint.floors}"
-        f"Habitaciones:{rooms_text}"
+        f"{blueprint.title}\n"
+        f"Tamaño: {blueprint.size}\n"
+        f"Pisos: {blueprint.floors}\n"
+        f"Habitaciones: {rooms_text}\n"
+        f"Materiales:\n{materials_text}\n"
+        f"Notas:\n{notes_text}"
     )
 
 

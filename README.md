@@ -1,13 +1,13 @@
 # Minecraft Agent
 
-Agente experimental para Minecraft construido con FastAPI. El proyecto ya tiene una interfaz web profesional, una API para generar planes de construcción y está pensado para exponer el servicio por ngrok.
+Minecraft Agent es una interfaz experimental para planear construcciones con estética clara, tono de Overworld y referencias directas a Minecraft. La app combina FastAPI, una vista web ligera y un flujo local para generar ideas de casas, bases y estructuras con materiales coherentes.
 
-## Qué hace
+## Qué incluye
 
-- Expone una API web con FastAPI.
-- Sirve una interfaz web con formulario, resumen y salida compacta del plan.
-- Organiza la lógica en módulos separados para arquitecto, planificador y materiales.
-- El cálculo es local y determinista; ngrok solo se usa para exponer el servicio hacia fuera.
+- Una API web con FastAPI para generar planes de construcción.
+- Una interfaz clara con panel de estado, formulario y salida lista para copiar.
+- Referencias visuales a bloques, biomas, redstone y supervivencia.
+- Lógica separada en módulos para arquitecto, planificador y materiales.
 
 ## Stack
 
@@ -19,46 +19,27 @@ Agente experimental para Minecraft construido con FastAPI. El proyecto ya tiene 
 ## Estructura
 
 ```text
-`src/`
-	main.py
-	agents/
-		architect.py
-		materials.py
-		planner.py
-	prompts/
-		architect_prompt.txt
-	templates/
-		index.html
-	static/
-		app.js
-		styles.css
+src/
+  main.py
+  agents/
+    architect.py
+    materials.py
+    planner.py
+  prompts/
+    architect_prompt.txt
+  templates/
+    index.html
+  static/
+    app.js
+    styles.css
 ```
 
-## Diagrama Mermaid
+## Flujo
 
-Pega este bloque en [Mermaid Live](https://mermaid.live) para verlo y editarlo:
-
-```mermaid
-flowchart TD
-		User[Usuario] --> API[FastAPI /src/main.py]
-		API --> Agent[Capas del agente]
-		Agent --> Architect[architect.py]
-		Agent --> Planner[planner.py]
-		Agent --> Materials[materials.py]
-		Architect --> Claude[services/claude.py]
-		Planner --> Claude
-		Materials --> Claude
-		Claude --> Response[Respuesta del agente]
-		Response --> API
-		API --> User
-```
-
-## Flujo esperado
-
-1. El usuario envía una petición a la API.
-2. FastAPI recibe la solicitud en `src/main.py`.
-3. Los módulos de `agents/` preparan la estrategia, el plan y los materiales.
-4. La API devuelve la respuesta final en JSON y la interfaz web la presenta en una tarjeta visual.
+1. El usuario describe lo que quiere construir.
+2. FastAPI recibe la petición en `src/main.py`.
+3. Los agentes calculan el plan, el tamaño y los materiales.
+4. La interfaz muestra el resultado en una tarjeta inspirada en Minecraft.
 
 ## Cómo ejecutar
 
@@ -73,19 +54,12 @@ uvicorn src.main:app --reload
 - `GET /health` confirma que el servicio está arriba.
 - `POST /api/build` genera el plan de construcción a partir del texto del usuario.
 
-## Estado del proyecto
+## Notas del proyecto
 
-- `src/main.py` ya sirve la web y la API.
-- Los módulos de `agents/` y `services/` ahora forman el primer flujo funcional del agente.
+- La experiencia está pensada para verse bien con colores claros y un estilo limpio.
+- ngrok sigue siendo útil para compartir la app durante pruebas o demos.
+- La lógica local se mantiene determinista para que el resultado sea estable.
 
-## Variables de entorno
+## Siguiente mejora sugerida
 
-- Ninguna obligatoria para la generación local.
-
-## ngrok
-
-ngrok se usa solo para exponer la app FastAPI a internet durante pruebas o demostraciones. No reemplaza al modelo ni a la lógica del agente.
-
-## Próximo paso sugerido
-
-Implementar la comunicación entre `main.py`, `planner.py` y `services/claude.py` para que el agente responda acciones concretas dentro del flujo de Minecraft.
+Conectar `main.py`, `planner.py` y `services/claude.py` para ampliar el agente con respuestas más ricas sobre castillos, aldeas, granjas y bases automáticas.

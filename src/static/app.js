@@ -3,6 +3,7 @@ const output = document.getElementById("result-output");
 const title = document.getElementById("result-title");
 const meta = document.getElementById("result-meta");
 const copyButton = document.getElementById("copy-button");
+const submitButton = form.querySelector("button[type='submit']");
 
 function renderPlan(plan) {
   title.textContent = plan.title;
@@ -25,14 +26,29 @@ form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const formData = new FormData(form);
   output.textContent = "Generando diseño...";
+  submitButton.disabled = true;
+  submitButton.textContent = "Generando...";
 
-  const response = await fetch("/api/build", {
-    method: "POST",
-    body: formData,
-  });
+  try {
+    const response = await fetch("/api/build", {
+      method: "POST",
+      body: formData,
+    });
 
-  const plan = await response.json();
-  renderPlan(plan);
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || "No se pudo generar el plan.");
+    }
+
+    const plan = await response.json();
+    renderPlan(plan);
+  } catch (error) {
+    output.textContent = `No se pudo generar el plano. ${error.message || "Intenta otra vez."}`;
+    meta.innerHTML = "";
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = "Generar plano de bloques";
+  }
 });
 
 copyButton.addEventListener("click", async () => {

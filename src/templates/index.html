@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Agent</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <main class="shell">
+        <section class="hero">
+            <div class="hero-copy">
+                <p class="eyebrow">Minecraft AI Builder</p>
+                <h1>Diseña casas, bases y futuras ciudades con un agente profesional.</h1>
+                <p class="lede">Escribe una idea y el agente devuelve un plan compacto, materiales, pisos y una vista inicial lista para expandir a ASCII, comandos y granjas.</p>
+                <div class="chips">
+                    <span>Arquitecto</span>
+                    <span>Planificador</span>
+                    <span>Materiales</span>
+                    <span>Redstone</span>
+                </div>
+            </div>
+            <aside class="hero-panel">
+                <p class="panel-label">Estado</p>
+                <strong>Listo para ngrok y AWS</strong>
+                <p>La API ya responde por HTTP y la capa de proveedor queda preparada para cambiar Claude o sumar Bedrock después.</p>
+            </aside>
+        </section>
+
+        <section class="workspace">
+            <form class="builder" id="builder-form">
+                <label for="user_request">Describe lo que quieres construir</label>
+                <textarea id="user_request" name="user_request" rows="4">{{ default_prompt }}</textarea>
+                <button type="submit">Generar diseño</button>
+            </form>
+
+            <section class="result-card">
+                <div class="result-header">
+                    <div>
+                        <p class="panel-label">Respuesta del agente</p>
+                        <h2 id="result-title">Casa Medieval</h2>
+                    </div>
+                    <button type="button" id="copy-button">Copiar</button>
+                </div>
+                <pre id="result-output">Escribe una petición para ver el diseño.</pre>
+                <div class="result-meta" id="result-meta"></div>
+            </section>
+        </section>
+    </main>
+    <script src="/static/app.js"></script>
+</body>
+</html>

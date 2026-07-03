@@ -21,8 +21,9 @@ if STATIC_DIR.exists():
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
     return templates.TemplateResponse(
-        "index.html",
-        {
+        request=request,
+        name="index.html",
+        context={
             "request": request,
             "default_prompt": "Quiero una casa medieval para supervivencia.",
         },

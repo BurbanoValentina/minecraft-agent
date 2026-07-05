@@ -1,6 +1,6 @@
 # Minecraft Agent
 
-Minecraft Agent es una interfaz experimental para planear construcciones con estética clara, tono de Overworld y referencias directas a Minecraft. La app combina FastAPI, una vista web ligera y un flujo local para generar ideas de casas, bases y estructuras con materiales coherentes.
+Minecraft Agent es una interfaz experimental para planear construcciones con estética clara, tono de Overworld y referencias directas a Minecraft. La app combina FastAPI, una vista web ligera y un flujo con IA para generar ideas de casas, bases y estructuras con materiales coherentes.
 
 ## Qué incluye
 
@@ -15,6 +15,8 @@ Minecraft Agent es una interfaz experimental para planear construcciones con est
 - FastAPI.
 - Uvicorn.
 - python-dotenv.
+- Groq API (LLM) para generación de planes.
+- AWS Elastic Beanstalk (EC2 + CloudFormation) para despliegue.
 
 ## Estructura
 
@@ -25,6 +27,8 @@ src/
     architect.py
     materials.py
     planner.py
+  services/
+    groq.py
   prompts/
     architect_prompt.txt
   templates/
@@ -38,8 +42,9 @@ src/
 
 1. El usuario describe lo que quiere construir.
 2. FastAPI recibe la petición en `src/main.py`.
-3. Los agentes calculan el plan, el tamaño y los materiales.
-4. La interfaz muestra el resultado en una tarjeta inspirada en Minecraft.
+3. El planificador consulta a Groq para generar el plano; si falla, usa una lógica local de respaldo.
+4. Los agentes calculan el tamaño y los materiales.
+5. La interfaz muestra el resultado en una tarjeta inspirada en Minecraft.
 
 ## Cómo ejecutar
 
@@ -47,6 +52,8 @@ src/
 pip install -r requirements.txt
 uvicorn src.main:app --reload
 ```
+
+Necesitas una variable de entorno `GROQ_API_KEY` en un archivo `.env` (ver sección de variables más abajo).
 
 ## Endpoints
 
@@ -57,9 +64,36 @@ uvicorn src.main:app --reload
 ## Notas del proyecto
 
 - La experiencia está pensada para verse bien con colores claros y un estilo limpio.
-- ngrok sigue siendo útil para compartir la app durante pruebas o demos.
-- La lógica local se mantiene determinista para que el resultado sea estable.
+- El agente usa Groq (Llama 3.3) para generar el plano; si falla, cae a una lógica local determinista de respaldo.
+- ngrok sigue siendo útil para compartir la app durante pruebas o demos locales.
+
+## Despliegue en AWS
+
+La app está desplegada en **Elastic Beanstalk** (single instance, EC2 t3.micro, dentro del free tier).
+
+> **Nota:** el ambiente no se mantiene activo permanentemente. Se apaga cuando no hay una demo en curso, para evitar costos innecesarios.
+
+### Levantar el ambiente
+
+```bash
+eb init -p python-3.12 minecraft-agent --region us-east-1
+eb create minecraft-agent-env --instance-type t3.micro --single
+eb setenv GROQ_API_KEY=tu_clave
+eb deploy
+```
+
+### Apagar el ambiente
+
+```bash
+eb terminate minecraft-agent-env
+```
+
+### Variables de entorno requeridas
+
+| Variable | Descripción |
+|---|---|
+| `GROQ_API_KEY` | Clave de la API de Groq ([console.groq.com/keys](https://console.groq.com/keys)) |
 
 ## Siguiente mejora sugerida
 
-Conectar `main.py`, `planner.py` y `services/claude.py` para ampliar el agente con respuestas más ricas sobre castillos, aldeas, granjas y bases automáticas.
+Ampliar el prompt del sistema en `planner.py` para soportar más estilos (castillos, aldeas, granjas) y agregar streaming de respuesta en el endpoint.

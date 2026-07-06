@@ -1,5 +1,7 @@
-from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv()
 
+from pathlib import Path
 from fastapi import FastAPI, Form, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -36,6 +38,6 @@ def health():
 
 
 @app.post("/api/build")
-def build_plan(user_request: str = Form(...)):
-    plan = generate_plan(user_request)
+async def build_plan(user_request: str = Form(...)):
+    plan = await generate_plan(user_request)
     return plan.model_dump()

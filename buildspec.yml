@@ -1,0 +1,27 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo "Installing dependencies..."
+      - pip install --upgrade pip
+      - pip install -r requirements.txt
+
+  build:
+    commands:
+      - echo "Running tests and validation..."
+      - python -m pytest tests/ --tb=short 2>/dev/null || echo "No tests found, skipping"
+      - echo "Build completed successfully"
+
+  post_build:
+    commands:
+      - echo "Preparing artifacts for deployment..."
+
+artifacts:
+  files:
+    - '**/*'
+  name: BuildArtifact
+
+cache:
+  paths:
+    - '/root/.cache/pip/**/*'

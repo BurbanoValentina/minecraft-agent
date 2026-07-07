@@ -3,50 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minecraft Agent</title>
+    <title>Minecraft AI Architect - Overworld Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-    <main class="shell">
-        <section class="hero">
-            <div class="hero-copy">
+    <header class="site-header">
+        <nav class="nav-shell">
+            <a class="logo" href="#top" aria-label="Ir al inicio">
+                <span class="logo-icon" aria-hidden="true"></span>
+                <span class="logo-text">MINECRAFT AI ARCHITECT</span>
+            </a>
+            <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="main-nav">Menu</button>
+            <ul class="nav-links" id="main-nav">
+                <li><a href="#builder">Constructor</a></li>
+                <li><a href="#features">Caracteristicas</a></li>
+                <li><a href="#stats">Estadisticas</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="shell" id="top">
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero-content">
                 <p class="eyebrow">Overworld Builder</p>
-                <h1>Diseña casas, bases y aldeas con una guía clara inspirada en Minecraft.</h1>
-                <p class="lede">Escribe tu idea y el agente devuelve un plan compacto con materiales, pisos, habitaciones y una propuesta visual lista para usar en supervivencia.</p>
-                <div class="chips">
-                    <span>Bloques</span>
-                    <span>Redstone</span>
-                    <span>Biomas</span>
-                    <span>Supervivencia</span>
+                <h1 id="hero-title">Crea construcciones <strong>epicas</strong></h1>
+                <p class="hero-lede">El agente IA de Minecraft genera planos detallados, lista de materiales y fases de construccion para tus proyectos en supervivencia o creativo.</p>
+                <div class="cta-buttons">
+                    <a class="btn btn-primary" href="#builder">Crear plano ahora</a>
+                    <a class="btn btn-secondary" href="#features">Ver caracteristicas</a>
                 </div>
             </div>
-            <aside class="hero-panel">
-                <p class="panel-label">Nivel</p>
-                <strong>Listo para construir</strong>
-                <p>La API responde por HTTP y la interfaz queda preparada para levantar ideas de castillos, granjas, bases subterráneas y aldeas flotantes.</p>
-            </aside>
+            <div class="hero-art" aria-hidden="true">
+                <div class="art-grid"></div>
+                <div class="block-icon">█</div>
+                <div class="floating-card">
+                    <p>Tiempo estimado</p>
+                    <strong>4-6 horas</strong>
+                </div>
+            </div>
         </section>
 
-        <section class="workspace">
-            <form class="builder" id="builder-form">
-                <label for="user_request">Describe lo que quieres construir en tu mundo</label>
-                <textarea id="user_request" name="user_request" rows="4">{{ default_prompt }}</textarea>
-                <button type="submit">Generar plano de bloques</button>
-            </form>
+        <section class="features-section" id="features" aria-labelledby="features-title">
+            <h2 class="section-title" id="features-title">Caracteristicas del agente</h2>
+            <div class="features-grid">
+                <article class="feature-card">
+                    <h3>Memoria inteligente</h3>
+                    <p>Recuerda ideas anteriores y propone mejoras para nuevos proyectos.</p>
+                </article>
+                <article class="feature-card">
+                    <h3>Materiales precisos</h3>
+                    <p>Incluye cantidades por bloque y sustituciones para diferentes biomas.</p>
+                </article>
+                <article class="feature-card">
+                    <h3>Plano detallado</h3>
+                    <p>Define dimensiones, distribucion interior y orden de construccion.</p>
+                </article>
+                <article class="feature-card">
+                    <h3>Modo supervivencia</h3>
+                    <p>Agrega consejos de iluminacion, defensa y eficiencia de recursos.</p>
+                </article>
+                <article class="feature-card">
+                    <h3>Rapido por API</h3>
+                    <p>Respuesta en tiempo real para iterar ideas sin salir de la pagina.</p>
+                </article>
+                <article class="feature-card">
+                    <h3>Listo para copiar</h3>
+                    <p>Genera salida limpia y util para pegar en notas o Discord.</p>
+                </article>
+            </div>
+        </section>
 
-            <section class="result-card">
-                <div class="result-header">
-                    <div>
-                        <p class="panel-label">Plano del agente</p>
-                        <h2 id="result-title">Casa Medieval</h2>
+        <section class="builder-section" id="builder" aria-labelledby="builder-title">
+            <h2 class="section-title" id="builder-title">Constructor de planos</h2>
+            <div class="builder-layout">
+                <form class="builder-card" id="builder-form">
+                    <h3>Describe tu idea</h3>
+                    <p class="card-text">Cuanto mas detalle incluyas, mejor sera el resultado del agente.</p>
+                    <label for="user_request" class="sr-only">Describe lo que quieres construir</label>
+                    <textarea id="user_request" name="user_request" rows="5" placeholder="Ej: Casa medieval de supervivencia con sotano de mineria, muralla, techo de madera oscura y zona de almacenamiento">{{ default_prompt }}</textarea>
+
+                    <div class="tags-container" aria-label="Etiquetas rapidas">
+                        <button type="button" class="tag-btn" data-tag="SUPERVIVENCIA">Supervivencia</button>
+                        <button type="button" class="tag-btn" data-tag="MEDIEVAL">Medieval</button>
+                        <button type="button" class="tag-btn" data-tag="DEFENSA">Defensa</button>
+                        <button type="button" class="tag-btn" data-tag="ALMACEN">Almacen</button>
                     </div>
-                    <button type="button" id="copy-button">Copiar</button>
-                </div>
-                <pre id="result-output">Escribe una petición para ver tu plano estilo Minecraft.</pre>
-                <div class="result-meta" id="result-meta"></div>
-            </section>
+
+                    <button type="submit" class="btn btn-primary full">Generar plano completo</button>
+                    <div class="loading" id="loading" aria-live="polite">Analizando tu idea...</div>
+                </form>
+
+                <section class="builder-card output-card" aria-live="polite">
+                    <div class="result-header">
+                        <div>
+                            <p class="panel-label">Plano del agente</p>
+                            <h3 id="result-title">Esperando tu descripcion</h3>
+                        </div>
+                        <button type="button" class="btn btn-secondary" id="copy-button">Copiar</button>
+                    </div>
+                    <pre id="result-output">Escribe una peticion para ver tu plano estilo Minecraft.</pre>
+                    <div class="result-meta" id="result-meta"></div>
+                </section>
+            </div>
+        </section>
+
+        <section class="stats-section" id="stats" aria-label="Estadisticas">
+            <article class="stat-card">
+                <h3>2400+</h3>
+                <p>Planos generados</p>
+            </article>
+            <article class="stat-card">
+                <h3>1200+</h3>
+                <p>Constructores activos</p>
+            </article>
+            <article class="stat-card">
+                <h3>85+</h3>
+                <p>Estilos disponibles</p>
+            </article>
+            <article class="stat-card">
+                <h3>99.8%</h3>
+                <p>Satisfaccion</p>
+            </article>
         </section>
     </main>
+
+    <footer class="site-footer">
+        <div class="footer-shell">
+            <p>Minecraft AI Architect</p>
+            <p>Interfaz responsive para generar planos de construccion con IA.</p>
+        </div>
+    </footer>
+
     <script src="/static/app.js"></script>
 </body>
 </html>

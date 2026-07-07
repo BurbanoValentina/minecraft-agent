@@ -25,3 +25,7 @@ htmlcov/
 .idea/
 .DS_Store
 Thumbs.db
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

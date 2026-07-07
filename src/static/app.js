@@ -4,9 +4,41 @@ const title = document.getElementById("result-title");
 const meta = document.getElementById("result-meta");
 const copyButton = document.getElementById("copy-button");
 const submitButton = form.querySelector("button[type='submit']");
+const loading = document.getElementById("loading");
+const requestInput = document.getElementById("user_request");
+const tagButtons = document.querySelectorAll(".tag-btn");
+const menuToggle = document.getElementById("menu-toggle");
+const mainNav = document.getElementById("main-nav");
+
+if (menuToggle && mainNav) {
+  menuToggle.addEventListener("click", () => {
+    const isOpen = mainNav.classList.toggle("is-open");
+    menuToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  });
+
+  mainNav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      mainNav.classList.remove("is-open");
+      menuToggle.setAttribute("aria-expanded", "false");
+    });
+  });
+}
+
+tagButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const tag = button.dataset.tag;
+    if (!tag) {
+      return;
+    }
+
+    const text = requestInput.value.trim();
+    requestInput.value = text ? `${text} [${tag}]` : `[${tag}]`;
+    requestInput.focus();
+  });
+});
 
 function renderPlan(plan) {
-  title.textContent = plan.title;
+  title.textContent = plan.title || "Plano generado";
   output.textContent = `${plan.summary}\n\nPlano ASCII:\n${plan.ascii_plan}`;
   meta.innerHTML = "";
 
@@ -25,7 +57,14 @@ function renderPlan(plan) {
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const formData = new FormData(form);
+
+  if (!requestInput.value.trim()) {
+    output.textContent = "Escribe una descripcion para poder generar un plano.";
+    return;
+  }
+
   output.textContent = "Generando diseño...";
+  loading.style.display = "block";
   submitButton.disabled = true;
   submitButton.textContent = "Generando...";
 
@@ -48,13 +87,21 @@ form.addEventListener("submit", async (event) => {
   } finally {
     submitButton.disabled = false;
     submitButton.textContent = "Generar plano de bloques";
+    loading.style.display = "none";
   }
 });
 
 copyButton.addEventListener("click", async () => {
-  await navigator.clipboard.writeText(output.textContent);
-  copyButton.textContent = "Copiado";
-  window.setTimeout(() => {
-    copyButton.textContent = "Copiar";
-  }, 1300);
+  try {
+    await navigator.clipboard.writeText(output.textContent);
+    copyButton.textContent = "Copiado";
+    window.setTimeout(() => {
+      copyButton.textContent = "Copiar";
+    }, 1300);
+  } catch {
+    copyButton.textContent = "No se pudo copiar";
+    window.setTimeout(() => {
+      copyButton.textContent = "Copiar";
+    }, 1300);
+  }
 });

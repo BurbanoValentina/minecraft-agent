@@ -1,4 +1,0 @@
-198.235.24.33 - - [04/Jul/2026:21:54:46 +0000] "GET / HTTP/1.1" 502 150 "-" "Hello from Palo Alto Networks, find out more about our scans in https://docs-cortex.paloaltonetworks.com/r/1/Cortex-Xpanse/Scanning-activity" "-"
-129.222.203.104 - - [04/Jul/2026:22:41:05 +0000] "GET / HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36" "-"
-129.222.203.104 - - [04/Jul/2026:22:41:05 +0000] "GET /favicon.ico HTTP/1.1" 502 552 "http://minecraft-agent-env.eba-qkahxwey.us-east-1.elasticbeanstalk.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36" "-"
-mi
